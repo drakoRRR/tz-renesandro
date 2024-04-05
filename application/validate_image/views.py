@@ -5,10 +5,17 @@ from rest_framework.response import Response
 from . import serializers
 from .services import ValidateImageService
 
+from drf_spectacular.utils import extend_schema
+
 
 class ValidateImage(views.APIView):
     """Validating images and return the good ones."""
+    permission_classes = [AllowAny]
 
+    @extend_schema(
+        request=serializers.ValidateImageSerializer,
+        responses={200: serializers.ValidateImageSerializer},
+    )
     def post(self, request):
         serializer = serializers.ValidateImageSerializer(data=request.data)
         if serializer.is_valid():
