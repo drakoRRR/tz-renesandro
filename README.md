@@ -4,6 +4,7 @@
 Before deploying the project, you need to configure the .env file, the project has .env .example
 ```dockerfile
 SECRET_KEY_DJANGO=
+OPENAI_API_KEY=
 ```
 After configuring the file, use Docker and docker-compose.
 
