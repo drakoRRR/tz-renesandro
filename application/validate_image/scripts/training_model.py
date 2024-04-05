@@ -1,6 +1,6 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
-import cv2
+# import cv2
 import os
 import numpy as np
 
@@ -13,7 +13,7 @@ from tensorflow.keras.callbacks import EarlyStopping
 current_file_path = os.path.abspath(__file__)
 
 project_root = os.path.dirname(os.path.dirname(current_file_path))
-project_root = os.path.dirname(os.path.dirname(project_root) + '\\' + 'application')
+project_root = os.path.dirname(os.path.dirname(project_root) + '/' + 'application')
 
 training_path = os.path.join(project_root, "images_for_model", "train")
 validation_path = os.path.join(project_root, "images_for_model", "validation")
