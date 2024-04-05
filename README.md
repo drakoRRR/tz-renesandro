@@ -20,4 +20,4 @@ By this url you can achive the site http://127.0.0.1:8000/
 
 # API docs
 By this url you can achive the docs http://127.0.0.1:8000/api/docs/
-![image docs](\media_for_readme\docs.png)
+![image docs](/media_for_readme/docs.png)
