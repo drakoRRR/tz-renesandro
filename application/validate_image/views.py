@@ -17,10 +17,11 @@ class ValidateImage(views.APIView):
         responses={200: serializers.ValidateImageSerializer},
     )
     def post(self, request):
+        enable_gpt = request.GET.get('enable_gpt', None)
         serializer = serializers.ValidateImageSerializer(data=request.data)
         if serializer.is_valid():
             images_list = serializer.validated_data.get('images_list')
-            valid_images = ValidateImageService(images_list).validate_images()
+            valid_images = ValidateImageService(images_list).validate_images(enable_gpt)
             return Response(data=dict(images_list=valid_images), status=status.HTTP_200_OK)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

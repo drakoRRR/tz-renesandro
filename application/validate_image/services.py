@@ -25,7 +25,7 @@ class ValidateImageService:
                      "in others, disproportionate head size, crooked limbs, crooked fingers, blurred face, "
                      "flying objects")
 
-    def validate_images(self):
+    def validate_images(self, enable_gpt=False):
         """Validate images to determine if they have been properly generated using our own model."""
         for url in self.images_url:
             response = requests.get(url)
@@ -38,10 +38,11 @@ class ValidateImageService:
 
             try:
                 model_prediction = model.predict(images)
-                gpt_prediction = self.validate_with_chatgpt(url)
-                prediction = self._get_prediction(model_prediction, gpt_prediction)
+                if enable_gpt:
+                    gpt_prediction = self.validate_with_chatgpt(url)
+                    model_prediction = self._get_prediction(model_prediction, gpt_prediction)
 
-                if prediction == 1:
+                if model_prediction == 1:
                     self.good_images.append(url)
             except Exception as e:
                 continue
@@ -55,9 +56,18 @@ class ValidateImageService:
                    "messages": [
                        {"role": "system",
                         "content": [{"type": "text",
-                                     "text": f"You are a cool image analyst. Your goal is to check if "
-                                             f"image has any defects like this {self.bugs}, all this bugs"
-                                             f"related also to anime, cartoons, graphic images ."}],
+                                     "text": f"You are an experienced image analyst tasked with identifying defects "
+                                             f"in various types of images, including those related to anime, cartoons, "
+                                             f"and graphic images, as well as realistic depictions of people. Your goal "
+                                             f"is to thoroughly examine each image for any abnormalities or defects, "
+                                             f"such as {self.bugs}. While analyzing images, pay attention to both "
+                                             f"common defects and unique characteristics of different genres, "
+                                             f"including unconventional proportions, exaggerated features, "
+                                             f"and stylized artwork often found in anime. Additionally, ensure accurate"
+                                             f" identification of human subjects and their body parts. Your analysis"
+                                             f" should be comprehensive and detailed to ensure accurate defect"
+                                             f" detection across different image types."
+                                        }],
                         },
                        {
                            "role": "user",
@@ -90,5 +100,5 @@ class ValidateImageService:
         """Result of both predictions."""
         if model_prediction == gpt_prediction:
             return model_prediction
-        return model_prediction
+        return gpt_prediction
 
